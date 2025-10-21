@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caeser Cipher</title>
+</head>
+<style>
+    body {
+        font-family: 'Times New Roman', Times, serif;
+        background-image: url('https://img.freepik.com/premium-vector/blue-matrix-background-abstract-binary-code-wallpaper-template-hackathon-other-digital-pro_87408-263.jpg?w=826');
+        color: #d8d5ff;
+        margin: 0;
+        padding: 0;
+        font-style: italic;
+        color: aliceblue;
+        font-size: 16px;
+    }
+
+    body::before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(3, 10, 107, 0);
+        z-index: 0;
+    }
+
+    body>* {
+        position: relative;
+        z-index: 1;
+    }
+
+    header {
+        top: 0%;
+        width: 100%;
+        background-color: #08013b97;
+        color: white;
+        padding: 0.50%;
+        text-align: center;
+        font-size: 35px;
+        font-weight: bold;
+    }
+
+    nav {
+        background-color: #232256e1;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        padding: 0.75rem 0;
+        scroll-behavior: smooth;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+
+    nav a:hover {
+        text-decoration: underline;
+    }
+
+    .home-form {
+        max-width: fit-content;
+    }
+
+    main {
+        max-width: 900px;
+        margin-top: 0%;
+        margin: 0rem auto;
+        padding: 0 1rem;
+    }
+
+    h1 {
+        color: #01143a;
+        font-style: italic;
+        text-align: center;
+        text-shadow: #eff2f7;
+        text-decoration: #08013b97;
+    }
+
+    .about-container {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .text-section {
+        flex: 1;
+        text-align: left;
+    }
+
+    .image-section img {
+        max-width: 400px;
+        height: auto;
+        display: block;
+        border-radius: 50%;
+    }
+
+    .page {
+        padding: 30px;
+        max-width: max-content;
+    }
+
+    .form-container {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .form-img {
+        max-width: 400px;
+        height: 100px;
+        display: block;
+        border-radius: 50%;
+    }
+
+    /*form {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 1rem;
+            background: rgb(255, 255, 255);
+            border-radius: 8px;
+            box-shadow: 0 5px 10px rgba(50, 30, 20, 0.5);
+        }*/
+    form {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        margin-top: 0%;
+        padding: 1rem;
+        max-width: 80%;
+        margin: 20px auto;
+        color: #faf7f7;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(133, 120, 120, 0.18);
+    }
+
+    label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 0.25rem;
+        border: 1px solid #9dbefb;
+        border-radius: 4px;
+        font-size: 1rem;
+        box-sizing: border-box;
+        resize: vertical;
+    }
+
+    textarea {
+        min-height: fixed;
+        max-block-size: fixed;
+    }
+
+    button {
+        margin-top: 1.5rem;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 4px;
+        font-family: 'Times New Roman', Times, serif;
+        cursor: pointer;
+        background-color: #224eac;
+        color: white;
+        transition: background-color 0.3s ease;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background-color: #153896;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .output {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: #e0e7ff;
+        border-radius: 4px;
+        white-space: pre-wrap;
+        min-height: 60px;
+    }
+
+    footer {
+        background-color: #08013b97;
+        text-align: center;
+        color: #fdfdfd;
+        padding: 1rem 2rem;
+        margin-top: 3rem;
+    }
+
+    <style>
+    /* ✅ Responsive Design for Mobile Devices */
+    @media (max-width: 768px) {
+
+        header {
+            font-size: 24px;
+            padding: 0.8rem;
+        }
+
+        nav {
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0.5rem;
+        }
+
+        nav a {
+            font-size: 1rem;
+        }
+
+        main {
+            padding: 0 0.5rem;
+        }
+
+        .about-container {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .image-section img {
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form {
+            max-width: 95%;
+            margin: 1rem auto;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .buttons {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        footer {
+            font-size: 0.9rem;
+            padding: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        header {
+            font-size: 20px;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+        }
+
+        p,
+        li {
+            font-size: 0.9rem;
+        }
+
+        .image-section img {
+            max-width: 200px;
+        }
+
+        nav a {
+            font-size: 0.95rem;
+        }
+    }
+
+    /*  Responsive Design Fix */
+    @media screen and (max-width: 992px) {
+
+        .about-container,
+        .form-container {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .image-section img,
+        .form-img {
+            max-width: 80%;
+            height: auto;
+            margin: 10px auto;
+        }
+
+        main {
+            max-width: 100%;
+            padding: 0 1rem;
+        }
+
+        form {
+            max-width: 95%;
+        }
+
+        nav {
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        nav a {
+            font-size: 1rem;
+        }
+
+        header {
+            font-size: 26px;
+            line-height: 1.2;
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        body {
+            font-size: 14px;
+        }
+
+        header {
+            font-size: 22px;
+            padding: 0.7rem;
+        }
+
+        nav {
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .image-section img {
+            max-width: 90%;
+        }
+
+        form {
+            padding: 0.8rem;
+            width: 95%;
+        }
+
+        textarea,
+        input[type="text"],
+        input[type="number"] {
+            font-size: 0.9rem;
+        }
+
+        button {
+            width: 100%;
+            font-size: 1rem;
+            padding: 0.6rem;
+        }
+
+        .buttons {
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        footer {
+            font-size: 0.85rem;
+            padding: 0.8rem;
+        }
+
+        marquee {
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
+<body>
+    <header>Caeser Cipher Encryption/Decryption
+    </header>
+    <nav>
+        <a href="##home page">Home</a>
+        <a href="#how-it-works">How-It-Works</a>
+        <a href="#Encrypt/decrypt">Encrypt/Decrypt</a>
+    </nav>
+    <main>
+        <!--home page-->
+
+        <section id="home page" class="page-active">
+            <form class="home-form">
+                <div class="about-container">
+                    <div class="text-section">
+                        <h1>About Caesar Cipher</h1>
+                        <p>The Caesar cipher, named after <a href="https://en.wikipedia.org/wiki/Julius_Caesar"
+                                style="color: #fdfdfd;">Julius Caeser</a> who used it around 58–50 BCE, is one of the
+                            earliest known encryption methods. By shifting letters in the alphabet, Caesar securely
+                            communicated with his generals during military campaigns, protecting sensitive messages from
+                            enemies. </p>
+                        <p>However, its simplicity eventually made it vulnerable to cryptanalysis, especially after the
+                            9th century when <a href="https://en.wikipedia.org/wiki/Al-Kindi"
+                                style="color: #fdfdfd;">Al-Kindi</a> introduced frequency analysis to break such
+                            ciphers.</p>
+                        <p>By the 19th century, the Caesar cipher was mainly used for educational purposes rather than
+                            secure communication. With the advent of computers in the 20th century, it became a classic
+                            example in cryptography teaching, illustrating fundamental encryption concepts.</p>
+                        <p>Julius Caesar’s legacy thus remains significant both historically and in the development of
+                            cryptography.</p>
+                    </div>
+                    <div class="image-section">
+                        <img src="https://safadtm.github.io/caesarcipher/assets/images/wheel.webp" alt="Caeser cipher"
+                            sizes="10px">
+                    </div>
+                </div>
+            </form>
+        </section>
+        <!-- How It Works Page -->
+        <marquee scrollamount="10" behavior="scroll" direction="fa-pull-left">Caesar Cipher Encryption/Decryption*
+            Caesar Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar Cipher
+            Encryption/Decryption*Caesar Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar
+            Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption*
+            Caesar Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar Cipher
+            Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar
+            Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption*
+        </marquee>
+        <section id="how-it-works" class="page">
+            <div class="form-container">
+                <form id="form1">
+                    <h1>How Caesar Cipher Works...</h1>
+                    <p>The Caesar cipher works by shifting the letters of the alphabet by a fixed number, called the key
+                        or shift. For encryption, each letter in the plaintext is replaced by the letter some fixed
+                        number of positions down the alphabet.</p>
+                    <p>For example, with a shift of 3:</p>
+                    <ul>
+                        <li>'A' becomes 'D'</li>
+                        <li>'B' becomes 'E'</li>
+                        <li>'C' becomes 'F'</li>
+                        <li>... and so forth.</li>
+                    </ul>
+                    <p>For decryption, the process is reversed by shifting letters back by the same fixed number.</p>
+                    <h3><u>Example:</u></h3>
+                    <p>Plaintext: <em>HELLO</em><br />Shift: 3<br />Ciphertext: <em>KHOOR</em></p>
+                    <p>The cipher is easy to break with modern techniques, but it is a great introduction to
+                        cryptography concepts.</p>
+                </form>
+                <form id="form2">
+                    <img src="https://tse1.mm.bing.net/th/id/OIP.4Z9Nd0Bo5NcO3vemqDeRUgHaE8?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3"
+                        style="width: 300px; height: 500px;">
+                </form>
+            </div>
+        </section>
+        <!--Encryption/Decryption form-->
+        <marquee scrollamount="10" behavior="scroll" direction="fa-pull-left">Caesar Cipher Encryption/Decryption*
+            Caesar Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar Cipher
+            Encryption/Decryption*Caesar Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar
+            Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption*
+            Caesar Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar Cipher
+            Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar
+            Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption* Caesar Cipher Encryption/Decryption*
+        </marquee>
+        <section id="Encrypt/decrypt">
+            <form id="caesarForm" onsubmit="return false;">
+                <h1>Caesar Cipher Encryption/Decryption</h1>
+                <label for="inputText">Input Text:</label>
+                <textarea id="inputText" placeholder="Enter text here..."></textarea>
+                <label for="shift">Shift Value:</label>
+                <input type="number" id="shift" value="3" />
+                <div class="buttons">
+                    <button id="encryptBtn" type="button">Encrypt</button>
+                    <button id="decryptBtn" type="button">Decrypt</button>
+                </div>
+                <label for="outputText">Output Text:</label>
+                <textarea id="outputText" readonly placeholder="Result will appear here..."></textarea>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 Caesar Cipher Encryption. All rights reserved.</p>
+    </footer>
+
+    <!--javascript code-->
+    <script>
+        function caesarCipher(text, shift) {
+            shift = shift % 26;
+            let result = '';
+
+            for (let char of text) {
+                if (char.match(/[a-z]/i)) {
+                    const isUpper = char === char.toUpperCase();
+                    const base = isUpper ? 'A'.charCodeAt(0) : 'a'.charCodeAt(0);
+                    const charCode = char.charCodeAt(0);
+                    const shiftedCharCode = ((charCode - base + shift + 26) % 26) + base;
+                    result += String.fromCharCode(shiftedCharCode);
+                } else {
+                    result += char;
+                }
+            }
+
+            return result;
+        }
+        document.getElementById('encryptBtn').addEventListener('click', () => {
+            const text = document.getElementById('inputText').value;
+            const shift = parseInt(document.getElementById('shift').value, 10) || 0;
+            const encrypted = caesarCipher(text, shift);
+            document.getElementById('outputText').value = encrypted;
+        });
+        document.getElementById('decryptBtn').addEventListener('click', () => {
+            const text = document.getElementById('inputText').value;
+            const shift = parseInt(document.getElementById('shift').value, 10) || 0;
+            const decrypted = caesarCipher(text, -shift);
+            document.getElementById('outputText').value = decrypted;
+        });
+    </script>
+</body>
+
+</html>
